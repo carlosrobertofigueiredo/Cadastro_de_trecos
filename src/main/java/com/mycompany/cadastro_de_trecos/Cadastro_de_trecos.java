@@ -12,6 +12,7 @@ public class Cadastro_de_trecos {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        clearScreen();
         mainMenu();
     }
 
