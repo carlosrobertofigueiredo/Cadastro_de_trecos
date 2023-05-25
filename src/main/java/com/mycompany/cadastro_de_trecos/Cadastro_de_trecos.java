@@ -5,6 +5,10 @@
 
 package com.mycompany.cadastro_de_trecos;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Cadastro_de_trecos {
@@ -33,27 +37,19 @@ public class Cadastro_de_trecos {
 
         // Executa um método conforme a opção escolhida.
         switch (option) {
-            case "0":
+            case "0" ->
                 exitProgram();
-                break;
-            case "1":
+            case "1" ->
                 listAll();
-                break;
-            case "2":
+            case "2" ->
                 listOne();
-                break;
-            case "3":
+            case "3" ->
                 newThing();
-                break;
-            case "4":
+            case "4" ->
                 editThing();
-                break;
-            case "5":
+            case "5" ->
                 deleteThing();
-                break;
-            default:
-                clearScreen();
-            System.out.println("Opção errada");
+            default ->
                 reloadMenu();
         }
     }
@@ -68,6 +64,47 @@ public class Cadastro_de_trecos {
 
     // Lista todos os trecos cadastrados.
     public static void listAll() {
+
+        try {
+            String sql = "SELECT * FROM things";
+            Connection conn = DbConnection.dbConnect();
+            Statement stmt = conn.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+
+            System.out.println(" ");
+            while (res.next()) {
+                System.out.println(
+                        "ID: " + res.getString("id") + "\n"
+                        + "Nome: " + res.getString("name") + "\n"
+                        + "Descrição: " + res.getString("description") + "\n"
+                );
+            }
+
+            conn.close();
+            stmt.close();
+            res.close();
+
+            System.out.println("Menu:\n\t[1] Menu principal\n\t[0] Sair\n");
+            System.out.print("Opção: ");
+
+            String option = scanner.next();
+
+            switch (option) {
+                case "0" ->
+                    exitProgram();
+                case "1" -> {
+                    clearScreen();
+                    mainMenu();
+                }
+                default ->
+                    reloadMenu();
+            }
+
+        } catch (SQLException error) {
+            System.out.println("Oooops! " + error.getMessage());
+            System.exit(0);
+        }
+
     }
 
     // Lista um treco específico pelo Id.
@@ -88,12 +125,16 @@ public class Cadastro_de_trecos {
 
     // Recarrega o menu principal.
     public static void reloadMenu() {
-        mainMenu();
+        clearScreen(); // Limpa o terminal.
+        System.out.println("Oooops! Opção inválida!\n");
+        mainMenu();    // Mostra o menu.
     }
-    //Limpa a tla do terminal.
-    public static void clearScreen(){
-        for(int i =0; i < 100; i++){
-        System.out.println("\n");
+
+    // Limpa a tela do terminal.
+    public static void clearScreen() {
+        for (int i = 0; i < 100; i++) {
+            System.out.println("\n");
+        }
     }
-}
+
 }
