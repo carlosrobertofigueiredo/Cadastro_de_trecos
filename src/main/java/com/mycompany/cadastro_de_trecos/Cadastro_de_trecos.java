@@ -1,9 +1,11 @@
 
 package com.mycompany.cadastro_de_trecos;
 
+import com.mycompany.cadastro_de_trecos.crud.Create;
 import com.mycompany.cadastro_de_trecos.crud.Delete;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import com.mycompany.cadastro_de_trecos.crud.Read;
+import com.mycompany.cadastro_de_trecos.crud.Update;
 import java.util.Scanner;
 
 public class Cadastro_de_trecos extends AppSetup {
@@ -32,26 +34,33 @@ public class Cadastro_de_trecos extends AppSetup {
 
         // Executa um método conforme a opção escolhida.
         switch (option) {
-            case "0" ->
+            case "0":
                 exitProgram();
-            case "1" -> {
+                break;
+            case "1":
                 clearScreen();
                 Read.readAll();
-            }
-            case "2" -> {
+                break;
+            case "2":
                 clearScreen();
                 Read.read();
-            }
-            case "3" ->
-                newThing();
-            case "4" ->
-                editThing();
-            case "5" -> {
+                break;
+            case "3":
+                clearScreen();
+                Create.create();
+                break;
+            case "4":
+                clearScreen();
+                Update.update();
+                break;
+            case "5":
                 clearScreen();
                 Delete.delete();
-            }
-            default ->
-                reloadMenu();
+                break;
+            default:
+                clearScreen();
+                System.out.println("Oooops! Opção inválida!\n");
+                mainMenu();
         }
     }
 
@@ -61,33 +70,6 @@ public class Cadastro_de_trecos extends AppSetup {
         clearScreen();
         System.out.println("\n\nFui!\n\n");
         System.exit(0);
-    }
-
-    // Cadastra um novo registro.
-    public static void newThing() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter Item ID: ");
-        String itemID = scan.nextLine();
-        System.out.print("Enter Item price: ");
-        String priceStr = scan.nextLine();
-        double price = Double.valueOf(priceStr);
-        System.out.println("Price of Item " + itemID + " is $" + price);
-        scan.close();
-    }
-
-    // Edita um registro pelo Id.
-    public static void editThing() {
-    }
-
-    // Apaga um registro pelo Id.
-    public static void deleteThing() {
-    }
-
-    // Recarrega o menu principal.
-    public static void reloadMenu() {
-        clearScreen(); // Limpa o terminal.
-        System.out.println("Oooops! Opção inválida!\n");
-        mainMenu();    // Mostra o menu.
     }
 
     // Limpa a tela do terminal.
