@@ -1,8 +1,6 @@
 
 package com.mycompany.cadastro_de_trecos.db;
 
-
-
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 
 public class DbConnection extends AppSetup {
 
@@ -20,19 +19,19 @@ public class DbConnection extends AppSetup {
         try {
 
             // Conecta ao banco de dados usando o driver JDBC adequado.
-             conn = DriverManager.getConnection(
-                    HOSTNAME + DATABASE,
-                    USERNAME,
-                    PASSWORD
-            );
+            conn = DriverManager.getConnection(MYSQLURL);
 
             // Se a conexão foi estabelecida, retorna ela.
             if (conn != null) {
                 return conn;
+            } else {
+                System.out.println("\nOooops! Erro na conexão com banco de dados.\n");
             }
 
         } catch (SQLException error) {
-            System.out.println("Oooops! " + error.getMessage());
+
+            // Tratamento de erros.
+            System.out.println("\nOooops! " + error.getMessage() + "\n");
             System.exit(0);
         }
 
@@ -76,11 +75,4 @@ public class DbConnection extends AppSetup {
         }
     }
 
-    // Teste unitário de conexão com o banco de dados.
-    public static void main(String[] args) {
-        Connection conn = DbConnection.dbConnect();
-        DbConnection.dbClose(res, stmt, pstm, conn);
-    }
-
 }
-
