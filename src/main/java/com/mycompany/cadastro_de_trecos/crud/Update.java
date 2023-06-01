@@ -69,14 +69,14 @@ public class Update extends AppSetup {
             String itemDescricao = keyboard.nextLine().trim();
             
              if (itemDescricao == ""){
-            itemNome = res.getString("descricao");
+            itemDescricao = res.getString("descricao");
             }
             
             System.out.print("\tLocalização: ");
             String itemLocalizacao = keyboard.nextLine().trim();
 
             if (itemLocalizacao == ""){
-            itemNome = res.getString("\tlocalizacao");
+            itemLocalizacao = res.getString("localizacao");
             }
             
             // Pede confirmação.
