@@ -1,14 +1,15 @@
-package com.mycompany.cadastro_de_trecos.crud;
+package com.mycompany.cadastro_de_trecos.crud; //Essa linha declara o pacote do arquivo, indicando a localização do arquivo dentro da estrutura de diretórios.
 
-import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.*;
-import static com.mycompany.cadastro_de_trecos.Tools.showRes;
-import static com.mycompany.cadastro_de_trecos.crud.Read.viewStatus;
-import com.mycompany.cadastro_de_trecos.db.DbConnection;
-import com.mycompany.cadastro_de_trecos.setup.AppSetup;
-import java.sql.SQLException;
+import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.*; //Essa linha importa todos os membros estáticos da classe Cadastro_de_trecos, que está em um pacote diferente.
+import static com.mycompany.cadastro_de_trecos.Tools.showRes;  //Essa linha importa o membro estático showRes da classe Tools do pacote com.mycompany.cadastro_de_trecos.
+import com.mycompany.cadastro_de_trecos.db.DbConnection; //Essa linha importa a classe DbConnection do pacote com.mycompany.cadastro_de_trecos.db.
+import com.mycompany.cadastro_de_trecos.setup.AppSetup; //Essa linha importa a classe AppSetup do pacote com.mycompany.cadastro_de_trecos.setup.
+import java.sql.SQLException;  //Essa linha importa a exceção SQLException do pacote java.sql.
 
+//Essa linha declara a classe Delete que estende a classe AppSetup.
 public class Delete extends AppSetup {
 
+    //Essa linha declara o método estático delete().
     public static void delete() {
 
         // Reserva recursos para o banco de dados.
@@ -19,10 +20,13 @@ public class Delete extends AppSetup {
         System.out.println(appName + "\n" + appSep);
         System.out.println("Apaga um registro");
         System.out.println(appSep);
-
+         
+        //Essa linha inicia um bloco try-catch para tratar exceções.
         try {
 
-            // Recebe o Id do teclado.
+            // Recebe o Id do teclado. 
+            /*Essas linhas solicitam a entrada do usuário para digitar um ID. Se o ID for igual a 0, 
+            o método clearScreen() é chamado e o método mainMenu() é chamado.*/
             System.out.print("Digite o ID ou [0] para retornar: ");
             id = Integer.parseInt(scanner.next());
             if (id == 0) {
@@ -32,6 +36,8 @@ public class Delete extends AppSetup {
         } catch (NumberFormatException e) {
 
             // Quando opção é inválida.
+            /*Essas linhas tratam a exceção NumberFormatException, caso a entrada do usuário não seja um número válido. 
+             O método clearScreen() é chamado, uma mensagem de erro é exibida e o método delete() é chamado recursivamente. */
             clearScreen();
             System.out.println("Oooops! Opção inválida!\n");
             delete();
@@ -40,15 +46,20 @@ public class Delete extends AppSetup {
         try {
 
             // Verifica se o registro existe.
+            /*  Essas linhas realizam uma consulta SQL para verificar se existe um registro com o ID fornecido. 
+                A variável sql contém a consulta que seleciona os campos e formata a data. A conexão com o banco de dados 
+                é estabelecida através do método dbConnect() da classe DbConnection, e a consulta é preparada e executada. 
+                O valor do ID é definido no PreparedStatement utilizando pstm.setInt(1, id). O resultado da consulta é armazenado na variável res.*/
             sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE status = '2' and id = ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
             res = pstm.executeQuery();
-
+          
+            //Verifica se há pelo menos um resultado retornado pela consulta.
             if (res.next()) {
 
-                // Se tem registro, exibe na view.
+                // Se tem registro, chama o método showRes e exibe o resultado na view.
                 showRes(res);
 
                 System.out.print("Tem certeza que deseja apagar o registro? [s/N] ");
