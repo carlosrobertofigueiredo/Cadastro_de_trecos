@@ -1,6 +1,7 @@
 package com.mycompany.cadastro_de_trecos.crud;
 
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.*;
+import static com.mycompany.cadastro_de_trecos.Tools.showRes;
 import static com.mycompany.cadastro_de_trecos.crud.Read.read;
 import com.mycompany.cadastro_de_trecos.db.DbConnection;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
@@ -40,7 +41,7 @@ public class Update extends AppSetup {
         try {
 
             // Obtém o registro solicitado do banco de dados.
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE status = '2' and id = ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
@@ -48,37 +49,49 @@ public class Update extends AppSetup {
             if (res.next()) {
 
                 // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  Descrição: " + res.getString("description") + "\n"
-                );
-
+               showRes(res);
+               
                 System.out.println("Insira os novos dados ou deixe em branco para manter os atuais:\n");
 
                 // Instância de Scanner para obter dados do teclado.
                 Scanner keyboard = new Scanner(System.in, "latin1");
 
-                System.out.print("\tNome: ");
-                String itemName = keyboard.nextLine().trim();
+                // Obtém o nome.
+            System.out.print("\tNome: ");
+            String itemNome = keyboard.nextLine().trim();
+            
+            if (itemNome == ""){
+            itemNome = res.getString("nome");
+            }
 
-                System.out.print("\tDescription: ");
-                String itemDescription = keyboard.nextLine().trim();
+            // Obtém a descrição.
+            System.out.print("\tDescrição: ");
+            String itemDescricao = keyboard.nextLine().trim();
+            
+             if (itemDescricao == ""){
+            itemNome = res.getString("descricao");
+            }
+            
+            System.out.print("\tLocalização: ");
+            String itemLocalizacao = keyboard.nextLine().trim();
 
-                // Pede confirmação.
-                System.out.print("\nOs dados acima estão corretos? [s/N] ");
-                if (keyboard.next().trim().toLowerCase().equals("s")) {
+            if (itemLocalizacao == ""){
+            itemNome = res.getString("\tlocalizacao");
+            }
+            
+            // Pede confirmação.
+            System.out.print("\nOs dados acima estão corretos? [s/N] ");
+            if (keyboard.next().trim().toLowerCase().equals("s")) {
 
-                    // Short Hand → https://www.w3schools.com/java/java_conditions_shorthand.asp
-                    String saveName = (itemName.equals("")) ? res.getString("name") : itemName;
-                    String saveDescription = (itemDescription.equals("")) ? res.getString("description") : itemDescription;
+                // Insere os dados na tabela usando PreparetedStatement. DBTABLE é a constante que armazena a tabela trecos
+                sql = "UPDATE " + DBTABLE + " SET  nome = ?, descricao = ?, localizacao = ? WHERE id = ?";
+                conn = DbConnection.dbConnect();
+                pstm = conn.prepareStatement(sql);
+                pstm.setString(1, itemNome);
+                pstm.setString(2, itemDescricao);
+                pstm.setString(3, itemLocalizacao);
+                pstm.setInt(4, id);
 
-                    // Atualiza registro no banco de dados.
-                    sql = "UPDATE " + DBTABLE + " SET name = ?, description = ? WHERE id = ?";
-                    pstm = conn.prepareStatement(sql);
-                    pstm.setString(1, saveName);
-                    pstm.setString(2, saveDescription);
-                    pstm.setInt(3, id);
                     if (pstm.executeUpdate() == 1) {
 
                         // Se o registro foi criado.

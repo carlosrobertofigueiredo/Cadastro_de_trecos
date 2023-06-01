@@ -1,23 +1,22 @@
-
 package com.mycompany.cadastro_de_trecos.crud;
-
 
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import com.mycompany.cadastro_de_trecos.db.DbConnection;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.clearScreen;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.exitProgram;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.mainMenu;
+import static com.mycompany.cadastro_de_trecos.Tools.showRes;
 import java.sql.SQLException;
 
-
 public class Read extends AppSetup {
+
+    static String sql = "";
+    static String viewStatus;
 
     // Lista todos os registros.
     public static void readAll() {
 
         // Reserva recursos.
-        String sql;
-
         // Cabeçalho da view.
         System.out.println(appName + "\n" + appSep);
         System.out.println("Lista todos os registros");
@@ -26,7 +25,7 @@ public class Read extends AppSetup {
         try {
 
             // Consulta o banco de dados.
-            sql = "SELECT * FROM " + DBTABLE;
+            sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE status != '0' ORDER BY nome ASC;";
             conn = DbConnection.dbConnect();
             stmt = conn.createStatement();
             res = stmt.executeQuery(sql);
@@ -34,13 +33,7 @@ public class Read extends AppSetup {
 
                 // Se encontrou registros.
                 do {
-
-                    // Exibe registro na view.
-                    System.out.println(
-                            "ID: " + res.getString("id") + "\n"
-                            + "  Nome: " + res.getString("name") + "\n"
-                            + "  Descrição: " + res.getString("description") + "\n"
-                    );
+                showRes(res);
                 } while (res.next());
             } else {
 
@@ -90,7 +83,7 @@ public class Read extends AppSetup {
 
         // Reserva recursos para o banco de dados.
         int id = 0;
-        String sql;
+        
 
         // Cabeçalho da seção.
         System.out.println(appName + "\n" + appSep);
@@ -117,7 +110,7 @@ public class Read extends AppSetup {
         try {
 
             // Faz consulta no banco de dados usando "preparedStatement".
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE status != '0' and id = ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
 
@@ -129,12 +122,7 @@ public class Read extends AppSetup {
 
             if (res.next()) {
 
-                // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  Descrição: " + res.getString("description") + "\n"
-                );
+               showRes(res);
             } else {
 
                 // Se não tem registro.

@@ -1,11 +1,11 @@
-
 package com.mycompany.cadastro_de_trecos.crud;
 
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.*;
+import static com.mycompany.cadastro_de_trecos.Tools.showRes;
+import static com.mycompany.cadastro_de_trecos.crud.Read.viewStatus;
 import com.mycompany.cadastro_de_trecos.db.DbConnection;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import java.sql.SQLException;
-
 
 public class Delete extends AppSetup {
 
@@ -40,7 +40,7 @@ public class Delete extends AppSetup {
         try {
 
             // Verifica se o registro existe.
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE status = '2' and id = ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
@@ -49,16 +49,12 @@ public class Delete extends AppSetup {
             if (res.next()) {
 
                 // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  Descrição: " + res.getString("description") + "\n"
-                );
+                showRes(res);
 
                 System.out.print("Tem certeza que deseja apagar o registro? [s/N] ");
                 if (scanner.next().trim().toLowerCase().equals("s")) {
 
-                    sql = "DELETE FROM " + DBTABLE + " WHERE id = ?";
+                    sql = "UPDATE " + DBTABLE + " SET status = '0' WHERE id = ?";
                     pstm = conn.prepareStatement(sql);
                     pstm.setInt(1, id);
                     if (pstm.executeUpdate() == 1) {

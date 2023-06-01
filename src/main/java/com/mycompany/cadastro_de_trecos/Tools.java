@@ -6,14 +6,25 @@ import java.sql.SQLException;
 
 public class Tools {
    
+    static String viewStatus;
     
     public static void showRes(ResultSet res) {
         try {
-            System.out.println(
-                    "ID: " + res.getString("id") + "\n"
-                    + "  Nome: " + res.getString("name") + "\n"
-                    + "  Descrição: " + res.getString("description") + "\n"
-            );
+                if (res.getString("status").equals("1")) {
+                        viewStatus = "BLOQUEADO";
+                    } else {
+                        viewStatus = "ATIVO";
+                    }
+
+                    // Exibe registro na view.
+                    System.out.println(
+                            "ID: " + res.getString("id") + "\n"
+                            + "  Data de cadastro: " + res.getString("databr") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Status: " + viewStatus + "\n"
+                    );
         } catch (SQLException error) {
 
             // Tratamento de erros.

@@ -1,20 +1,18 @@
-
 package com.mycompany.cadastro_de_trecos.crud;
 
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.clearScreen;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.exitProgram;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.mainMenu;
 import static com.mycompany.cadastro_de_trecos.Tools.showRes;
+import static com.mycompany.cadastro_de_trecos.crud.Read.viewStatus;
 import com.mycompany.cadastro_de_trecos.db.DbConnection;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-
-
 public class Search extends AppSetup {
-    
-      public static void search() {
+
+    public static void search() {
 
         // Reserva recursos.
         String searchString;
@@ -40,15 +38,13 @@ public class Search extends AppSetup {
             // Se digitou uma string.
             try {
 
-                sql = "SELECT * FROM " + DBTABLE + " WHERE name LIKE ? OR description LIKE ?";
+                sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE nome LIKE ? OR descricao LIKE ?";
                 conn = DbConnection.dbConnect();
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, "%" + searchString + "%");
                 pstm.setString(2, "%" + searchString + "%");
                 res = pstm.executeQuery();
                 if (res.next()) {
-
-                    System.out.println(" ");
 
                     // Se encontrou registros, exibe na view.
                     do {
