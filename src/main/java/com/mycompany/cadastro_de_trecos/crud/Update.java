@@ -57,6 +57,11 @@ public class Update extends AppSetup {
                 Scanner keyboard = new Scanner(System.in, "latin1");
 
                 // Obtém o nome.
+                /* Essa parte solicita ao usuário que digite o nome do item e armazena o valor na variável itemNome.
+                   Em seguida, verifica se o valor digitado está vazio. 
+                   Se estiver vazio, significa que o usuário não forneceu um novo valor para o nome e, 
+                   portanto, atribui o valor existente (obtido da variável res ou do banco de dados) à variável itemNome.
+                   Caso tenha digitado algo mantém os dados coletados no keyboard.nextline*/
             System.out.print("\tNome: ");
             String itemNome = keyboard.nextLine().trim();
             
@@ -64,14 +69,14 @@ public class Update extends AppSetup {
             itemNome = res.getString("nome");
             }
 
-            // Obtém a descrição.
+            // Obtém a descrição. Usa a mesma lógica do itemNone.
             System.out.print("\tDescrição: ");
             String itemDescricao = keyboard.nextLine().trim();
             
              if (itemDescricao == ""){
             itemDescricao = res.getString("descricao");
             }
-            
+            //Obtém a localização. Usa a mesma lógica do itemNone.
             System.out.print("\tLocalização: ");
             String itemLocalizacao = keyboard.nextLine().trim();
 
@@ -80,12 +85,25 @@ public class Update extends AppSetup {
             }
             
             // Pede confirmação.
+            /*Essa parte exibe uma mensagem para o usuário, solicitando a confirmação dos dados inseridos. 
+              O usuário deve digitar "s" para confirmar ou qualquer outra entrada para cancelar a atualização. 
+              A entrada do usuário é lida utilizando o objeto keyboard (um objeto Scanner).
+              Se a entrada for igual a "s" (ignorando espaços em branco e com letras convertidas para minúsculas), 
+              o código continua com a atualização do registro.
+             */
             System.out.print("\nOs dados acima estão corretos? [s/N] ");
             if (keyboard.next().trim().toLowerCase().equals("s")) {
 
-                // Insere os dados na tabela usando PreparetedStatement. DBTABLE é a constante que armazena a tabela trecos
+                /* Insere os dados na tabela usando PreparetedStatement. DBTABLE é a constante que armazena a tabela trecos
+                   Essa parte é executada quando o usuário confirma que os dados estão corretos. 
+                   Ela atualiza os valores dos campos "nome", "descricao" e "localizacao" na tabela do banco de dados.
+                   O comando SQL utilizado é um UPDATE que utiliza placeholders (?) para os valores a serem atualizados.
+                */
                 sql = "UPDATE " + DBTABLE + " SET  nome = ?, descricao = ?, localizacao = ? WHERE id = ?";
                 conn = DbConnection.dbConnect();
+                /*O objeto pstm é um PreparedStatement que representa a consulta preparada. 
+                  Os métodos setString() e setInt() são usados para definir os valores nos placeholders da consulta preparada,
+                  utilizando os valores armazenados nas variáveis itemNome, itemDescricao, itemLocalizacao e id. */
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, itemNome);
                 pstm.setString(2, itemDescricao);

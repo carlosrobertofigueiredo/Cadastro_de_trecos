@@ -12,6 +12,10 @@ import java.util.Scanner;
 
 public class Search extends AppSetup {
 
+    /*No geral, esse trecho de código executa uma consulta de pesquisa no banco de dados 
+      com base em um termo de pesquisa fornecido pelo usuário e exibe os resultados correspondentes, 
+      ou exibe uma mensagem de erro se nenhum resultado for encontrado. */
+    
     public static void search() {
 
         // Reserva recursos.
@@ -41,9 +45,19 @@ public class Search extends AppSetup {
                 sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE nome LIKE ? OR descricao LIKE ?";
                 conn = DbConnection.dbConnect();
                 pstm = conn.prepareStatement(sql);
+                /*Essas linhas atribuem os valores de pesquisa aos placeholders na consulta preparada. 
+                  O valor da variável searchString é usado, com % adicionados antes e depois, 
+                  para realizar uma correspondência parcial na pesquisa.
+                  Após a execução da consulta, o resultado é armazenado na variável res. 
+                  A próxima parte do código verifica se foram encontrados registros: */
+                
                 pstm.setString(1, "%" + searchString + "%");
                 pstm.setString(2, "%" + searchString + "%");
                 res = pstm.executeQuery();
+                
+                /*Se a consulta retornar algum resultado (pelo menos um registro), 
+                  o código entra no bloco if e itera sobre os registros encontrados, 
+                  chamando o método showRes() para exibi-los na visualização. */
                 if (res.next()) {
 
                     // Se encontrou registros, exibe na view.
@@ -54,6 +68,9 @@ public class Search extends AppSetup {
                 } else {
 
                     // Se não tem registro.
+                    /*Caso não sejam encontrados registros, o código entra no bloco else, realiza algumas ações, 
+                      como limpar a tela e exibir uma mensagem de erro, e em seguida chama o método search() 
+                      novamente para permitir uma nova pesquisa.*/
                     clearScreen();
                     System.out.println("Oooops! Não achei nada!\n");
                     search();

@@ -6,6 +6,11 @@ import com.mycompany.cadastro_de_trecos.db.DbConnection; //Essa linha importa a 
 import com.mycompany.cadastro_de_trecos.setup.AppSetup; //Essa linha importa a classe AppSetup do pacote com.mycompany.cadastro_de_trecos.setup.
 import java.sql.SQLException;  //Essa linha importa a exceção SQLException do pacote java.sql.
 
+/*Essa classe lida com a exclusão de registros do banco de dados com base no ID fornecido pelo usuário. 
+  É verificado se o registro existe, exibe-o na tela, solicita a confirmação do usuário e realiza a exclusão se confirmado. 
+  Caso contrário, exibe mensagens de erro ou volta ao início para permitir uma nova entrada de ID.
+*/
+
 //Essa linha declara a classe Delete que estende a classe AppSetup.
 public class Delete extends AppSetup {
 
@@ -61,10 +66,17 @@ public class Delete extends AppSetup {
 
                 // Se tem registro, chama o método showRes e exibe o resultado na view.
                 showRes(res);
-
+                 
+                /* Pergunta ao usuário se ele tem certeza de que deseja apagar o registro. 
+                  A entrada do usuário é lida usando o scanner.next(), e é convertida para minúsculas e 
+                  removidos os espaços em branco antes de comparar com "s". */
                 System.out.print("Tem certeza que deseja apagar o registro? [s/N] ");
                 if (scanner.next().trim().toLowerCase().equals("s")) {
-
+                   /* Essas linhas executam uma atualização no banco de dados para definir o status do registro como "0", 
+                      indicando que foi apagado. A consulta SQL é preparada com o novo comando de atualização,
+                      o valor do ID é definido no PreparedStatement, e a atualização é executada usando pstm.executeUpdate(). 
+                      Se a atualização afetar uma linha (retornar 1), uma mensagem de confirmação é exibida. 
+                      Caso contrário, uma mensagem de erro é exibida. */
                     sql = "UPDATE " + DBTABLE + " SET status = '0' WHERE id = ?";
                     pstm = conn.prepareStatement(sql);
                     pstm.setInt(1, id);
@@ -77,7 +89,11 @@ public class Delete extends AppSetup {
                 } else {
                     System.out.println("\nNada aconteceu!");
                 }
-
+             /* Caso não haja resultado retornado pela consulta, 
+                significa que não foi encontrado um registro com o ID fornecido. 
+                O método clearScreen() é chamado para limpar a tela, 
+                uma mensagem de erro é exibida, e o método delete() 
+                é chamado recursivamente para permitir uma nova tentativa. */
             } else {
                 clearScreen();
                 System.out.println("Oooops! Não achei nada!\n");

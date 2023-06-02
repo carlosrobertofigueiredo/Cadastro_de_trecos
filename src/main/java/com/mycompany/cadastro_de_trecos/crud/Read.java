@@ -110,6 +110,18 @@ public class Read extends AppSetup {
         try {
 
             // Faz consulta no banco de dados usando "preparedStatement".
+            /*SELECT * - Seleciona todos os campos da tabela.
+              DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr - Formata o campo data
+              no formato "dia/mês/ano às hora:minuto" e atribui o alias(apelido) databr ao resultado formatado. 
+              Isso permite que a data seja exibida em um formato mais legível.
+              FROM [DBTABLE] - Especifica a tabela a ser consultada. O nome da tabela é obtido de uma variável chamada DBTABLE,
+              que contém o nome da tabela.
+              WHERE status != '0' and id = ? - Define as condições para filtrar os registros. A condição status != '0' 
+              significa que o campo status não deve ser igual a '0'. Isso é usado para excluir registros com status '0'.
+              A condição id = ? é um placeholder para o valor do ID que será definido posteriormente no PreparedStatement.
+              Essa consulta é usada para obter registros da tabela onde o status não é igual a '0' 
+              e o ID corresponde a um valor específico fornecido posteriormente. O valor do ID é definido usando um PreparedStatement,
+              que é uma técnica segura para evitar ataques de injeção de SQL.*/
             sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLE + " WHERE status != '0' and id = ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
