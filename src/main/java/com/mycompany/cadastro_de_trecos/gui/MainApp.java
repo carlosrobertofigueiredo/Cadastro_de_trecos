@@ -122,7 +122,7 @@ public class MainApp extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "Descrição"
+                "ID", "Nome", "Descrição", "Localização", "Status"
             }
         ));
         jScrollPane1.setViewportView(tableListAll);
@@ -136,6 +136,8 @@ public class MainApp extends javax.swing.JFrame {
             tableListAll.getColumnModel().getColumn(2).setMinWidth(100);
             tableListAll.getColumnModel().getColumn(2).setPreferredWidth(500);
             tableListAll.getColumnModel().getColumn(2).setMaxWidth(600);
+            tableListAll.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tableListAll.getColumnModel().getColumn(4).setPreferredWidth(80);
         }
 
         javax.swing.GroupLayout panelListAllLayout = new javax.swing.GroupLayout(panelListAll);
@@ -147,7 +149,7 @@ public class MainApp extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panelListAllLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelListAllLayout.setVerticalGroup(
@@ -155,8 +157,8 @@ public class MainApp extends javax.swing.JFrame {
             .addGroup(panelListAllLayout.createSequentialGroup()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         mainPanel.add(panelListAll, "cardListAll");
@@ -169,7 +171,7 @@ public class MainApp extends javax.swing.JFrame {
             panelListIdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListIdLayout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addGap(0, 533, Short.MAX_VALUE))
+                .addGap(0, 540, Short.MAX_VALUE))
         );
         panelListIdLayout.setVerticalGroup(
             panelListIdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +219,7 @@ public class MainApp extends javax.swing.JFrame {
                     .addGroup(panelCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jTextField1)
                         .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)))
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         panelCreateLayout.setVerticalGroup(
             panelCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,7 +248,7 @@ public class MainApp extends javax.swing.JFrame {
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEditLayout.createSequentialGroup()
                 .addComponent(jLabel5)
-                .addGap(0, 570, Short.MAX_VALUE))
+                .addGap(0, 577, Short.MAX_VALUE))
         );
         panelEditLayout.setVerticalGroup(
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,7 +267,7 @@ public class MainApp extends javax.swing.JFrame {
             panelDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDeleteLayout.createSequentialGroup()
                 .addComponent(jLabel6)
-                .addGap(0, 562, Short.MAX_VALUE))
+                .addGap(0, 569, Short.MAX_VALUE))
         );
         panelDeleteLayout.setVerticalGroup(
             panelDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,7 +321,7 @@ public class MainApp extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(628, 488));
+        setSize(new java.awt.Dimension(635, 488));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
